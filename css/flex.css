@@ -1,0 +1,33 @@
+/*flexbox display on body*/
+#maincontent {
+	display: flex;
+	flex-wrap: wrap;
+
+}
+
+@media screen and (min-width: 300;){
+
+	#restaurant-container{
+		min-width:100%;
+		order:1;
+	}
+	#breadcrumb {
+		min-width:100%;
+		order:2;
+	}
+
+	#reviews-container{
+		min-width:100%;
+		order:3;
+	}
+	.inside #map-container {
+		min-width:100%;
+		order:4;
+
+	}
+
+}
+
+/*@media screen and (max-width: 550px){
+
+}*/
