@@ -140,8 +140,28 @@ createRestaurantHTML = (restaurant) => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  li.append(image);
+  // add alt text for photos
+  image.src = DBHelper.imageUrlForRestaurant(restaurant); 
+  image.alt = restaurant.photext;
+  li.append(image); 
+
+  const image = new Image();
+  image.src = $("restaurant-img").attr("srcset");
+  image.onload = function() {
+    var width = image.width;
+    if (width == 700) {
+        //do stuff
+        image.srcset = "md"
+
+    } elseif (width == 851) {
+       //do other stuff
+       image.srcset = "lg"
+
+    } else {
+
+      return;
+    }
+  }
 
   const name = document.createElement('h1');
   name.innerHTML = restaurant.name;

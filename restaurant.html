@@ -3,12 +3,13 @@
 
 <head>
   <!-- added a view port for responsiveness -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.1">
+  <meta http-equiv="Content-type" Content="text/html" charset="utf-8">
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
-  <link rel="stylesheet" href="css/styles.css" type="text/css">
-  <link rel="stylesheet" href="css/flex.css" type="text/css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/flex.css">
   
   <title>Restaurant Info</title>
 </head>
@@ -31,25 +32,36 @@
   <!-- flex div added -->
   
   <!-- Beginning main -->
-  <main id="maincontent">
+  <main id="maincontent2" class="flex">
     <!-- Beginning map -->
-    <section id="map-container">
-      <div id="map"></div>
-    </section>
+    <div >
+        <section id="map-container">
+          <div id="map"></div>
+        </section>
+    </div>
     <!-- End map -->
     <!-- Beginning restaurant -->
-    <section id="restaurant-container">
-      <h1 id="restaurant-name"></h1>
-      <img id="restaurant-img">
-      <p id="restaurant-cuisine"></p>
-      <p id="restaurant-address"></p>
-      <table id="restaurant-hours"></table>
-    </section>
+    <div>
+        <section id="restaurant-container">
+          <h1 id="restaurant-name"></h1> 
+          <picture>    
+          <source media="(min-width: 700px)" srcset="*_md_1x.jpg 1x"> 
+          <source media="(min-width: 851px)" srcset="*_lg_2x.jpg 2x"> 
+              <img id="restaurant-img">
+          </picture>  
+                <p id="restaurant-cuisine"></p>
+                <p id="restaurant-address"></p>
+          <table id="restaurant-hours"></table>
+        
+        </section>
+    </div>
     <!-- end restaurant -->
     <!-- Beginning reviews -->
-    <section id="reviews-container">
-      <ul id="reviews-list"></ul>
-    </section>
+    <div>
+          <section id="reviews-container">
+            <ul id="reviews-list"></ul>
+          </section>
+    </div>
     <!-- End reviews -->
   </main>
   <!-- End main -->
@@ -66,20 +78,22 @@
   <script type="text/javascript" src="js/dbhelper.js"></script>
   <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.js"></script>
-  <!-- Google Maps -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_tKbW6A5pQ-eupxI56myUnHLqYCzOjKo&libraries=places&callback=initMap"></script>
+ <!--  Google Maps -->
+  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_tKbW6A5pQ-eupxI56myUnHLqYCzOjKo&libraries=places&callback=initMap"></script> -->
+ <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
+
   <!-- End scripts -->
   
 </body>
-  <script src="script.js"></script>
+  <!-- <script src="script.js"></script> -->
 
-    <script>
+  <!--   <script>
       // Let's register our serviceworker
       navigator.serviceWorker.register('resSW.js', {
         // The scope cannot be parent to the script url
         scope: './',
       });
       </script>
-    <script src="logging.js"></script>
+    <script src="logging.js"></script> -->
 
 </html>

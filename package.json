@@ -1,0 +1,24 @@
+{
+  "name": "mobile_web",
+  "version": "1.0.0",
+  "description": "Mobile Web Specialist course",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MO Z",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-image-resize": "^0.13.0",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-responsive": "^2.10.0",
+    "gulp-responsive-images": "0.0.3",
+    "run-sequence": "^2.2.1"
+  },
+  "dependencies": {
+    "del": "^3.0.0",
+    "gulp-cli": "^2.0.1"
+  }
+}
