@@ -4,14 +4,13 @@
 body,td,th,p{
 	font-family: Arial, Helvetica, sans-serif;
   /*changed base font size*/
-	font-size: 1.06em;
+	font-size: 1.2em;
 	color: #333;
 	line-height: 1.5;
 }
 body {
 	background-color: #fdfdfd;
 	margin: 0;
-  /*changed position to absolute*/
 	position:relative;
 }
 ul, li {
@@ -30,6 +29,44 @@ a:hover, a:focus {
 a img{
 	border: none 0px #fff;
 }
+/*================================*/
+/*style button*/
+button {
+  background-color: black;
+  color: #F5F3EE;
+  padding: 15px;
+  display: inline-block;
+  font-size: 1.2rem;
+  margin: 15px 0 0;
+}
+
+button:hover, button:focus {
+  background: #E6CC22;
+  color: #FFFF;
+  text-decoration: underline;
+  text-decoration-color: white;
+}
+
+button:focus {
+  outline:0;
+  box-shadow: 0 0 8px 3px 
+  rgba(255,255,255, 0.8);
+}
+
+/*#restaurants-list li a {
+  background-color: #921305;
+  border-bottom: 3px solid #eee;
+  color: #fff;
+  
+  
+  
+  padding: 8px 30px 10px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}*/
+/*===============================*/
+
 h1, h2, h3, h4, h5, h6 {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 0 20px;
@@ -56,7 +93,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 
 #footer {
-  background-color: #444;
+  background-color: black;
   color: #aaa;
   font-size: 8pt;
   letter-spacing: 1px;
@@ -68,7 +105,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 /* ====================== Navigation ====================== */
 nav {
   max-width: 100%;
-  height: 80px;
+  /*height: 80px;*/
   background-color: #252831;
   text-align:center;
 }
@@ -127,7 +164,7 @@ nav h1 a {
   max-width: 100%;
   /*changed height*/
   height: 100%;
-  background-color: #3397DB;
+  background-color: #E6CC22;
   align-items: center;
   text-align: center;
 }
@@ -142,25 +179,26 @@ nav h1 a {
   text-align: center;
   /*added padding around filter bckgcolor*/
   padding: 20px;
-  background-color: #3387DB;
+  background-color: black;
 }
 .filter-options select {
   background-color: white;
   border: 1px solid #fff;
   font-family: Arial,sans-serif;
-  font-size: 11pt;
+  font-size: 1.2rem;
   height: 35px;
   letter-spacing: 0;
-  margin: 10px;
-  padding: 0 10px;
-  /*changed width of options button*/
-  width: 45%;
+  /*changed margin */
+  margin: 20px;
+  /*changed padding*/
+  padding: 4px 30px 4px;
+ 
 
 }
 
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
-  background-color: steelblue;
+  background-color: #7D1935;
   list-style: outside none none;
   margin: 0;
   /*changed padding around list*/
@@ -184,17 +222,18 @@ nav h1 a {
   max-width: 100%;
   /*added shadow box*/
   box-shadow: 10px 10px 8px ;
+  font-size:1.0em;
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
   display: block;
   margin: 0;
   max-width: 100%;
-  min-height: 248px;
+  /*min-height: 248px;*/
   min-width: 100%;
 }
 #restaurants-list li h1 {
-  color: #f18200;
+  color: black;
   font-family: Arial,sans-serif;
   font-size: 1.5em;
   font-weight: 200;
@@ -205,20 +244,20 @@ nav h1 a {
 }
 #restaurants-list p {
   margin: 0;
-  font-size: 1.5em;
+  font-size: 1.5rem;
 }
-#restaurants-list li a {
-  background-color: #921305;
-  border-bottom: 3px solid #eee;
-  color: #fff;
-  display: inline-block;
-  font-size: 10pt;
-  margin: 15px 0 0;
-  padding: 8px 30px 10px;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
+
+
+
+/*hide label */
+.filter-label {
+  display: none;
 }
+
+
+
+
+/**/
 /*
  ====================== Restaurant Details ====================== 
 */
@@ -235,7 +274,7 @@ nav h1 a {
   position: relative;
   right: 0;
   top: 80px;
-  max-width: 50%;
+  max-width: 100%;
 }
 .inside #map {
   background-color: #ccc;
@@ -279,7 +318,7 @@ nav h1 a {
   padding: 2px 0;
   text-align: center;
   text-transform: uppercase;
-	width: 100%;
+	max-width: 100%;
 }
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
@@ -321,3 +360,8 @@ nav h1 a {
   color: #666;
   /*align-content: center;*/
 }
+
+
+
+
+

@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <!-- added a view port for responsiveness -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-type" Content="text/html" charset="utf-8">
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/flex.css">
-  
+  <link rel="stylesheet" href="css/styles.css">  
+  <link rel="stylesheet" href="css/response.css">  
+
+
+  <!-- leaflet.js for mapbox -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+
   <title>Restaurant Info</title>
+  
 </head>
 
 <body class="inside">
@@ -43,12 +48,9 @@
     <!-- Beginning restaurant -->
     <div>
         <section id="restaurant-container">
-          <h1 id="restaurant-name"></h1> 
-          <picture>    
-          <source media="(min-width: 700px)" srcset="*_md_1x.jpg 1x"> 
-          <source media="(min-width: 851px)" srcset="*_lg_2x.jpg 2x"> 
-              <img id="restaurant-img">
-          </picture>  
+          <!-- changed to h2, a11y -->
+          <h2 id="restaurant-name"></h2> 
+              <img id="restaurant-img" media="(min-width:400w)">
                 <p id="restaurant-cuisine"></p>
                 <p id="restaurant-address"></p>
           <table id="restaurant-hours"></table>
@@ -79,21 +81,18 @@
   <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.js"></script>
  <!--  Google Maps -->
-  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_tKbW6A5pQ-eupxI56myUnHLqYCzOjKo&libraries=places&callback=initMap"></script> -->
- <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCb3wH4Rr_0qRou4iL1ZgMUFFHE8g0RCBs=places&callback=initMap"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/8.7.1/lazyload.min.js"></script>
+
+ <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script> -->
+ 
+ <!-- leaflet.js for mapbox -->
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
 
   <!-- End scripts -->
   
 </body>
-  <!-- <script src="script.js"></script> -->
 
-  <!--   <script>
-      // Let's register our serviceworker
-      navigator.serviceWorker.register('resSW.js', {
-        // The scope cannot be parent to the script url
-        scope: './',
-      });
-      </script>
-    <script src="logging.js"></script> -->
 
 </html>
