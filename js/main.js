@@ -12,10 +12,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
 });
-
-
-
-
 /**
  * Fetch all neighborhoods and set their HTML.
  */
@@ -92,28 +88,8 @@ initMap = () => {
       'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     id: 'mapbox.streets'
   }).addTo(newMap);
-
   updateRestaurants();
 }
-/**
- * Initialize Google map, called from HTML.
- */
-// window.initMap = () => {
-//   let loc = {
-//     lat: 40.722216,
-//     lng: -73.987501
-//   };
-//   self.map = new google.maps.Map(document.getElementById('map'), {
-//     zoom: 12,
-//     center: loc,
-//     scrollwheel: false
-//   }); 
-//     // for iframe message in lighthouse
-//     google.maps.event.addListenerOnce(self.map, 'idle', () => {
-//     document.getElementsByTagName('iframe')[0].title = "Google Maps";
-//   });    
-//   updateRestaurants(); 
-// }
 
 /**
  * Update page and map for current restaurants.
@@ -171,12 +147,9 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
-
-  
-    // image.src = DBHelper.imageUrlForRestaurant(restaurant); 
     // create picture element 
   const picture = document.createElement('picture');
-    
+    picture.setAttribute('id', 'resta-pic'); 
   const img = DBHelper.imageUrlForRestaurant(restaurant);
   const imgurlsm = img + "sm_2x.jpg";
   const imgurl1x = img + "md_1x.jpg";
@@ -209,8 +182,7 @@ createRestaurantHTML = (restaurant) => {
     li.append(picture);
  
 
-
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
     name.innerHTML = restaurant.name;
     li.append(name);
 
@@ -232,12 +204,11 @@ createRestaurantHTML = (restaurant) => {
     };
 // ===================================
 // added aria label
-    more.setAttribute('aria-label',restaurant.photext)
+    more.setAttribute('aria-label',restaurant.photext);
     li.append(more)
 
   return li
 }
-
 
 /**
  * Add markers for current restaurants to the map.
@@ -253,15 +224,4 @@ createRestaurantHTML = (restaurant) => {
   });
 } 
 
-// addMarkersToMap = (restaurants = self.restaurants) => {
-//   restaurants.forEach(restaurant => {
-//     // Add marker to the map
-//     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
-//     google.maps.event.addListener(marker, 'click', () => {
-//       window.location.href = marker.url   
-//     });
-//     self.markers.push(marker);
-//   });
-  
-// }
 

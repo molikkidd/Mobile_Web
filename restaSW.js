@@ -1,27 +1,26 @@
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
     navigator.serviceWorker.register('/restaSW.js').then(function(registration) {
       // Registration was successful
       console.log('ServiceWorker registration successful with scope: ', registration.scope);
     }, function(err) {
       // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
+      console.log('ServiceWorker registration failed: ', registration.err);
     });
-  });
-}
+};
 
 var Cache_name = 'resta-sw-1';
 var Cached_items = [
                   './',
-                  '/index.html',
-                  '/restaurant.html',
+                  '/dist/index.html',
+                  '/dist/restaurant.html',
                   '/js/dbhelper.js',
                   '/js/main.js',
                   '/js/restaurant_info.js',
-                  '/css/styles.css',
+                  '/dist/css',
                   '/data/restaurants.json',
-                  '/img/'
-                  ]
+                  '/img/',
+                  '/restaSW.js'
+                  ];
 
 
 self.addEventListener('install', function(event) {
@@ -37,13 +36,18 @@ self.addEventListener('install', function(event) {
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request).then(function(response) {
-        // Cache hit - return response
+    caches.match(event.request.url).then(function(response) {
         if (response) { 
           return response; 
         }
-        return fetch(event.request);
+        return fetch(event.request.url);
+        // change the logic...seems redundant
+    }).catch(function(resp){
+      // dont think i need this to catch request.url
+      // move or delete
+      if (event.request = event.request.url){
+        return resp;
       }
-    )
+    })
   );
 });

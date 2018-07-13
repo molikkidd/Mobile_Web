@@ -1,9 +1,6 @@
 let restaurant;
 var newMap;
 
-/**
- * Initialize Google map, called from HTML.
- */
 document.addEventListener('DOMContentLoaded', (event) => {  
   initMap();
 });
@@ -32,28 +29,9 @@ initMap = () => {
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
     }
-  });
+  });   
 }
 
-// window.initMap = () => {
-//   fetchRestaurantFromURL((error, restaurant) => {
-//     if (error) { // Got an error!
-//       console.error(error);
-//     } else {
-//       self.map = new google.maps.Map(document.getElementById('map'), {
-//         zoom: 16,
-//         center: restaurant.latlng,
-//         scrollwheel: false
-//       });
-//       fillBreadcrumb();
-//       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-//     }
-//     // for iframe message in lighthouse
-//     google.maps.event.addListenerOnce(self.map, 'idle', () => {
-//     document.getElementsByTagName('iframe')[0].title = "Google Maps";
-//   });
-//   });
-// }
 
 /**
  * Get current restaurant from page URL.
@@ -142,7 +120,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
@@ -190,6 +168,7 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
+  // breadcrumb.setAttribute('aria-label', restaurant.name)
   breadcrumb.appendChild(li);
 }
 

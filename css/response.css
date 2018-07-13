@@ -1,5 +1,3 @@
-
-
 /*===============GRID ON INDEX FILE============*/
 @media screen and (max-width: 717px){
   #maincontent {
@@ -13,10 +11,12 @@
   #restaurants-list li h1 p {
     font-size: 2em;
   }
+  #restaurants-list li {
+    display: flex;
+    flex-flow:column;
+  }
 }
-
 @media screen and (min-width: 718px) and (max-width: 1020px){
-
   #restaurants-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -25,22 +25,17 @@
   #restaurants-list li {
     display: flex;
     flex-flow:column;
-    width:85%;
   }
 }
-
 @media screen and (min-width: 1021px){
-
   #restaurants-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
-
   #restaurants-list li {
     display: flex;
     flex-flow:column;
   }
-  
 /*padding around the body*/
   #maincontent {
     max-width: 1020px;
@@ -48,60 +43,52 @@
       margin-right: auto;
   }
 }
-
-
-
-
 /*========GRID / FLEXBOX ON RESTAURANT DETAILS PAGE=====*/
-
 @media screen and (max-width: 760px){
   #maincontent2 {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    flex-flow: column;
   }
-  .inside #map-container {
-    display: none;
+  .inside #map {
+    order: 1;
   }
   .inside #restaurant-container {
+    order: 2;
     max-width:100%;
     padding: 140px 10px 10px; 
   }
   .inside #reviews-container {
+    order: 3;
     padding: 10px 10px;
   }
 }
-
 @media screen and (min-width: 761px) and (max-width:850px) {
-  
   .flex {
     display: flex;
     flex-wrap: wrap;
   }
   .inside #map-container {
     order:1;
+
+  }
+  .inside #map {
+    background-color: #ccc;
     height: 100%;
     position: fixed;
     right: 0;
     top: 80px;
     width: 50%;
   }
-  .inside #map {
-    background-color: #ccc;
-    height: 100%;
-    width: 100%;
-  }
   .inside #restaurant-container {
     max-width:45%;
     padding: 140px 20px 8px;
   }
-  #reviews-container {
+  .inside #reviews-container {
     max-width: 50%;
     padding: 20px 8px;
   }
 }
-
 @media screen and (min-width: 851px) {
-
   .flex {
     display: flex;
     flex-direction: row;
@@ -124,7 +111,6 @@
     max-width: 100%;
   } 
 }
-
 @media screen and (min-width: 1021px){ 
 /*padding around the body*/
   #maincontent2 {

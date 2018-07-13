@@ -171,15 +171,3 @@ class DBHelper {
     return marker;
   }
 }
-//   static mapMarkerForRestaurant(restaurant, map) {
-//     const marker = new google.maps.Marker({
-//       position: restaurant.latlng,
-//       title: restaurant.name,
-//       url: DBHelper.urlForRestaurant(restaurant),
-//       map: map,
-//       animation: google.maps.Animation.DROP}
-//     );
-//     return marker;
-//   }
-
-// }
