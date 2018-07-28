@@ -11,8 +11,17 @@ const del = require('del');
 var htmlmin = require('gulp-htmlmin');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
-// const sass = require('gulp-sass');
+const browserSync = require('browser-sync').create();
+const sass = require('gulp-sass');
 const $ = gulpLoadPlugins();
+
+gulp.task('browser-sync', function(){
+  browserSync.init({
+    server: "./"
+  })
+  browserSync.stream();
+  
+})
 
 // use GM then move to folder responsive
 gulp.task('imagesgm', function () {
@@ -54,33 +63,40 @@ gulp.task('copy-fixed-images', function() {
 
 // ==========================================
 // // Gulp task to minify HTML files
-gulp.task('pages', function() {
-  return gulp.src(['./**/*.html'])
-    .pipe(htmlmin({
-      collapseWhitespace: true,
-      removeComments: true
-    }))
-    .pipe(gulp.dest('./dist'));
+// gulp.task('pages', function() {
+//   return gulp.src(['./**/*.html'])
+//     .pipe(htmlmin({
+//       collapseWhitespace: true,
+//       removeComments: true
+//     }))
+//     .pipe(gulp.dest('./dist'));
+// });
+
+gulp.task('styles', function(){
+  return gulp.src('sass/**/*.scss')
+  .pipe(sass().on('error', sass.logError))
+  .pipe(autoprefixer({browsers: ['last 2 versions']
+})) 
+  .pipe(gulp.dest('./css'))
+  .pipe(browserSync.stream());
 });
 
-// gulp.task('styles', function(){
-//   return gulp.src('sass/**/*.scss')
-//   .pipe(sass().on('error', sass.logError))
-//   .pipe(autoprefixer({browsers: ['last 2 versions']
-// })) 
-//   .pipe(gulp.dest('./css'))
-// });
 // Gulp task to minify CSS files
 gulp.task('styles', function () {
   return gulp.src('./css/**/*.css')
     // Auto-prefix css styles for cross browser compatibility
-    .pipe(autoprefixer({browsers: AUTOPREFIXER_BROWSERS})) 
+    .pipe(autoprefixer()) 
     .pipe(csso())
     .pipe(gulp.dest('./dist/css'))
+    .pipe(browserSync.stream());
+
+    gulp.watch("/css/*.css").on('change', browserSync.reload);
+    gulp.watch("/*.html").on('change', browserSync.reload);
 });
 
 
 // combo build task for responsive (gm) and min images
 gulp.task('default', function(callback) {
-  runSequence('imagesgm', ['imagesmin', 'copy-fixed-images'],'pages', 'styles',callback);
+  runSequence('browser-sync','imagesgm', ['imagesmin', 'copy-fixed-images'], 'styles', 
+    callback);
 });

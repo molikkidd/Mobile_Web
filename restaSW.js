@@ -36,18 +36,21 @@ self.addEventListener('install', function(event) {
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request.url).then(function(response) {
-        if (response) { 
-          return response; 
+      caches.match(event.request.url).then(response => {
+          if (response) { 
+            return response; 
+          }  else {
+          return fetch(event.request.url);
         }
-        return fetch(event.request.url);
-        // change the logic...seems redundant
-    }).catch(function(resp){
-      // dont think i need this to catch request.url
-      // move or delete
-      if (event.request = event.request.url){
-        return resp;
-      }
-    })
-  );
+          // change the logic...seems redundant
+      }).catch(function(resp) {
+        // dont think i need this to catch request.url
+        console.log(resp.error);
+        // move or delete
+      })
+  )
 });
+
+
+
+
