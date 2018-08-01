@@ -19,42 +19,39 @@ class DBHelper {
   static fetchRestaurants(callback) {
 
     fetch(DBHelper.DATABASE_URL).then(response => {
-           response.json().then(restaurants => {
-        const dbPromise = idb.open('restaDB', 1, upgradeDb => {
-          switch (upgradeDb.oldVersion) {
-            case 0:
-            upgradeDb.createObjectStore('restaurants', {
-              keyPath: 'id'
-            });
-          }
-        
-        });
-        callback(null, restaurants); 
+         response.json().then(restaurants => { 
 
-
-      // transaction wrapper to add restaurants to IDB
-        dbPromise.then(db => {
-          const tx = db.transaction('restaurants', 'readwrite');
-          const restaStore = tx.objectStore('restaurants');
-
-            // loop thru each restaurant and add to the cache
-            restaurants.forEach(restaurant => {
-              restaStore.put(restaurant);
-            });
-            // display all data from the cache
-            return restaStore.getAll();
-
-        }).catch( error => { // Oops!. Got an error from server.
-              console.log(Response.error);
-                callback(null, error);
+          const dbPromise = idb.open('restaDB', 12, upgradeDb => {
+            switch (upgradeDb.oldVersion) {
+              case 0:
+              upgradeDb.createObjectStore('restaurants', {
+                keyPath: 'id'
+                  });
+                }
+          
           });
 
+          dbPromise.then(db => {
+            const tx = db.transaction('restaurants', 'readwrite'); 
+            const restaStore = tx.objectStore('restaurants');
 
-    });
+            // loop thru each restaurant and add to the cache
+            restaurants.forEach(restaurant => { 
+            restaStore.put(restaurant);
+            });
+            // display all data from the cache
+            return restaStore.getall();
            
-  });  
+        }).catch( error => { // Oops!. Got an error from server.
+            // return all restaurants 
+            callback(null, restaurants);
 
-  };
+            console.log(response.error);
+        }); 
+
+    })
+  });
+};
 
   /**
    * Fetch a restaurant by its ID.
@@ -175,7 +172,10 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}`);
+    if (restaurant.photograph) {
+      return (`/img/${restaurant.photograph}`);
+    }
+    return ('/img/10md_1x.jpg');
   }
 
   /**

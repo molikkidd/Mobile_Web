@@ -149,7 +149,8 @@ createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
     // create picture element 
   const picture = document.createElement('picture');
-    picture.setAttribute('id', 'resta-pic'); 
+    picture.setAttribute('class', 'resta-pic'); 
+    
   const img = DBHelper.imageUrlForRestaurant(restaurant);
   const imgurlsm = img + "sm_2x.jpg";
   const imgurl1x = img + "md_1x.jpg";
@@ -163,8 +164,8 @@ createRestaurantHTML = (restaurant) => {
     source.media = '(min-width: 710px)';
     source.srcset = `${imgurl1x}`;
     // add source to picture element
-  picture.append(source);
-     
+  picture.append(source); 
+
  source = document.createElement('source');
   // add media width and srcsets to to source element 
     source.media = '(min-width: 1020px)';
@@ -174,6 +175,8 @@ createRestaurantHTML = (restaurant) => {
 
   // create image element within picture element as default image
   const image = document.createElement('img');
+
+    image.setAttribute('class', 'lazyload');
     image.className = 'restaurant-img';
     image.src = imgurlsm;
     image.alt = restaurant.photext;
@@ -204,7 +207,7 @@ createRestaurantHTML = (restaurant) => {
     };
 // ===================================
 // added aria label
-    more.setAttribute('aria-label',restaurant.photext);
+    more.setAttribute('aria-label', restaurant.name);
     li.append(more)
 
   return li

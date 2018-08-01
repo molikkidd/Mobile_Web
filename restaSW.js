@@ -1,3 +1,5 @@
+
+
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/restaSW.js').then(function(registration) {
       // Registration was successful
@@ -13,11 +15,11 @@ var Cached_items = [
                   './',
                   '/dist/index.html',
                   '/dist/restaurant.html',
+                  '/iDbLib.js',
                   '/js/dbhelper.js',
                   '/js/main.js',
                   '/js/restaurant_info.js',
                   '/dist/css',
-                  '/data/restaurants.json',
                   '/img/',
                   '/restaSW.js'
                   ];
@@ -35,22 +37,14 @@ self.addEventListener('install', function(event) {
 
 
 self.addEventListener('fetch', function(event) {
-  event.respondWith(
+
+  event.respondWith( 
       caches.match(event.request.url).then(response => {
-          if (response) { 
-            return response; 
-          }  else {
-          return fetch(event.request.url);
-        }
-          // change the logic...seems redundant
-      }).catch(function(resp) {
-        // dont think i need this to catch request.url
-        console.log(resp.error);
-        // move or delete
+        return response || fetch(event.request.url)
+        }).catch(error => {
+        console.log(Response.error);
       })
-  )
-});
-
-
+    );
+  })
 
 
