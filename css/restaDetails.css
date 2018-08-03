@@ -25,6 +25,9 @@
   /*added shadow box*/
   box-shadow: 10px 10px 8px ;
   font-size:1.0em;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
@@ -100,6 +103,7 @@
   /*changed res img size to 100*/
 	max-width: 100%;
 }
+
 #restaurant-address {
   /*changed font-size*/
   font-size: 1.5em;

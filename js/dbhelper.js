@@ -21,7 +21,7 @@ class DBHelper {
     fetch(DBHelper.DATABASE_URL).then(response => {
          response.json().then(restaurants => { 
 
-          const dbPromise = idb.open('restaDB', 12, upgradeDb => {
+          const dbPromise = idb.open('restaDB', 2, upgradeDb => {
             switch (upgradeDb.oldVersion) {
               case 0:
               upgradeDb.createObjectStore('restaurants', {
@@ -172,11 +172,16 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    if (restaurant.photograph) {
-      return (`/img/${restaurant.photograph}`);
+    if (restaurant.photograph){
+      return `/img/${restaurant.photograph}`;
+     } 
+     // return missing photo or change the data/json file on server
+     // or add a stock missing photo pic :-)
+     // change to search for id then serve photo
+
+     return '/img/10';
     }
-    return ('/img/10md_1x.jpg');
-  }
+  
 
   /**
    * Map marker for a restaurant.

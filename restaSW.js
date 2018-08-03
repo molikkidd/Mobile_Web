@@ -16,11 +16,11 @@ var Cached_items = [
                   '/dist/index.html',
                   '/dist/restaurant.html',
                   '/iDbLib.js',
-                  '/js/dbhelper.js',
-                  '/js/main.js',
-                  '/js/restaurant_info.js',
+                  '/dist/js/dbhelper.js',
+                  '/dist/js/main.js',
+                  '/dist/js/restaurant_info.js',
                   '/dist/css',
-                  '/img/',
+                  '/img/rest-list',
                   '/restaSW.js'
                   ];
 
