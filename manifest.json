@@ -1,0 +1,24 @@
+{
+  "name": "MWS Restaurant Reviews",
+  "short_name": "Res-Reviews",
+  "description": "Restaurant reviews from the New York Area",
+  "version": "0.0.0.1",
+  "manifest_version": 1,
+  "theme_color": "#899033",
+  "start_url": "http://localhost:8000",
+  "background_color": "#899033",
+  "display": "standalone",
+  "icons": [
+  {
+    "src": "/img/icons/AR-LOGO-LG-black.png",
+    "type": "image/png",
+    "sizes": "512x512"
+  },
+  {
+    "src": "/img/icons/AR-LOGO-SM-black.png",
+    "type": "image/png", 
+    "sizes": "192x192"
+  }
+]
+  
+}

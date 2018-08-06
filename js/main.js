@@ -175,9 +175,9 @@ createRestaurantHTML = (restaurant) => {
 
   // create image element within picture element as default image
   const image = document.createElement('img');
-  image.setAttribute('class', 'lazyload');
-    image.className = 'restaurant-img';
+    image.className = 'restaurant-img lazyload';
     image.src = `${imgurlsm}`;
+    image.setAttribute('data-src', `${imgurlsm}`);
     image.alt = restaurant.name;
     picture.append(image);
     // add picture element to li 

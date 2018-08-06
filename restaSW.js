@@ -37,10 +37,12 @@ self.addEventListener('install', function(event) {
 
 
 self.addEventListener('fetch', function(event) {
-
   event.respondWith( 
-      caches.match(event.request.url).then(response => {
-        return response || fetch(event.request.url)
+      caches.match(event.request.url, {ignoreSeach:true}).then(response => {
+        if (response) {
+            return response; 
+          } 
+         return fetch(event.request.url);
         }).catch(error => {
         console.log(Response.error);
       })

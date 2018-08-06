@@ -173,14 +173,11 @@ class DBHelper {
    */
   static imageUrlForRestaurant(restaurant) {
     if (restaurant.photograph){
-      return `/img/${restaurant.photograph}`;
-     } 
-     // return missing photo or change the data/json file on server
-     // or add a stock missing photo pic :-)
-     // change to search for id then serve photo
-
-     return '/img/10';
-    }
+        return `/img/${restaurant.photograph}`
+    } 
+        return `/img/${restaurant.id}`;
+  }
+  
   
 
   /**
