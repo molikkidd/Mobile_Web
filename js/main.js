@@ -1,6 +1,7 @@
 let restaurants,
   neighborhoods,
-  cuisines
+  cuisines,
+var DBHelper = `http://localhost:1337/restaurants`;
 var newMap
 var markers = []
 

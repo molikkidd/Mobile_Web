@@ -1,7 +1,19 @@
 /**
  * Common database helper functions.
  */
+
+ const dbPromise = idb.open('restaDB', 6, upgradeDb => {
+            switch (upgradeDb.oldVersion) {
+              case 0:
+              upgradeDb.createObjectStore('restaurants', {
+                keyPath: 'id'
+                  });
+                }
+          
+          });
+
 class DBHelper {
+
 
   /**
    * Database URL.
@@ -19,17 +31,7 @@ class DBHelper {
   static fetchRestaurants(callback) {
 
     fetch(DBHelper.DATABASE_URL).then(response => {
-         response.json().then(restaurants => { 
-
-          const dbPromise = idb.open('restaDB', 2, upgradeDb => {
-            switch (upgradeDb.oldVersion) {
-              case 0:
-              upgradeDb.createObjectStore('restaurants', {
-                keyPath: 'id'
-                  });
-                }
-          
-          });
+         return response.json().then(restaurants => { 
 
           dbPromise.then(db => {
             const tx = db.transaction('restaurants', 'readwrite'); 
@@ -38,15 +40,15 @@ class DBHelper {
             // loop thru each restaurant and add to the cache
             restaurants.forEach(restaurant => { 
             restaStore.put(restaurant);
+            return tx.complete;
             });
             // display all data from the cache
-            return restaStore.getall();
-           
-        }).catch( error => { // Oops!. Got an error from server.
-            // return all restaurants 
             callback(null, restaurants);
-
-            console.log(response.error);
+            return restaStore.getAll();
+        }).catch( error => { // Oops!. Got an error from server.
+            // return all restaurants when its 
+            callback(error, restaurants);
+            console.log(error);
         }); 
 
     })
