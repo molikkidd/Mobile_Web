@@ -2,14 +2,35 @@
  * Common database helper functions.
  */
 
- const dbPromise = idb.open('restaDB', 6, upgradeDb => {
+
+
+// Restaurant URLS
+const Database_Url = `http://localhost:1337/`;
+const favor_Url = `http://localhost:1337/restaurants/?is_favorite=true`;
+const restById_Url = `http://localhost:1337/restaurants/<restaurant_id>`;
+
+// Review URLS
+const revs_Url = 'http://localhost:1337/reviews/';
+const revById_Url = `http://localhost:1337/reviews/?restaurant_id=<restaurant_id>`;
+const restRev_ById = `http://localhost:1337/reviews/<review_id>`;
+
+const dbPromise = idb.open('restaDB', 21, upgradeDb => {
             switch (upgradeDb.oldVersion) {
               case 0:
               upgradeDb.createObjectStore('restaurants', {
                 keyPath: 'id'
                   });
-                }
-          
+                
+              case 1: 
+              const reviews = upgradeDb.createObjectStore('reviews', {
+                keyPath: 'id'
+              });
+
+              reviews.createIndex('restaurant_id', 'restaurant_id', {
+                autoIncrement: true
+              });
+
+            }
           });
 
 class DBHelper {
@@ -20,9 +41,7 @@ class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
-    // `http://localhost:${port}/data/restaurants.json`;
+    return Database_Url;
   }
 
   /**
@@ -30,9 +49,8 @@ class DBHelper {
    */
   static fetchRestaurants(callback) {
 
-    fetch(DBHelper.DATABASE_URL).then(response => {
+    fetch(DBHelper.DATABASE_URL+'restaurants').then(response => {
          return response.json().then(restaurants => { 
-
           dbPromise.then(db => {
             const tx = db.transaction('restaurants', 'readwrite'); 
             const restaStore = tx.objectStore('restaurants');
@@ -55,17 +73,90 @@ class DBHelper {
   });
 };
 
+static fetchReviewsById(id, callback) {
+
+    fetch(DBHelper.DATABASE_URL+`reviews/`).then(response => { 
+         return response.json().then(reviews => { 
+
+          // store reviews in the reviews Store
+          dbPromise.then(db => { 
+            const tx = db.transaction('reviews', 'readwrite'); 
+            const revStore = tx.objectStore('reviews');
+
+            // loop thru each restaurant and add to the cache
+            if (Array.isArray(reviews)){
+            reviews.forEach(review => { 
+            revStore.put(review);
+            return tx.complete;
+            });
+
+           return revStore.getAll();
+
+          }
+
+
+          // console.log(reviews);
+            // display all data from the cache
+           
+        }).then(revObj =>{
+           console.log(revObj);
+
+          dbPromise.then(db => { 
+          const tx = db.transaction('reviews', 'readonly').objectStore('reviews'); 
+          const revIndex = tx.index('restaurant_id');
+
+          revIndex.openCursor().onsuccess = event => {
+            let cursor = event.target.result;
+
+
+            revObj.map(revId =>{
+               return revIndex.getAll('restaurant_id');
+            })
+
+            if (cursor === restaurant_id) {
+              cursor.continue();  
+              
+            }
+
+            return revIndex.getAll();
+              
+          }
+
+                              
+        });
+        
+
+        }).catch( error => { // Oops!. Got an error from server.
+
+          // return reviews by restaurantId index 
+
+            callback(error, reviews);
+
+            console.log(error);
+        }); 
+
+      })
+    });
+}
+
+
   /**
    * Fetch a restaurant by its ID.
    */
-  static fetchRestaurantById(id, callback) {
+static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
     DBHelper.fetchRestaurants((error, restaurants) => {
+      // open idb and get restaurants by ID then add them
+
+
+
       if (error) {
         callback(error, null);
       } else {
         const restaurant = restaurants.find(r => r.id == id);
-        if (restaurant) { // Got the restaurant
+
+        if (restaurant) { 
+        // Got the restaurant  
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);
@@ -73,6 +164,8 @@ class DBHelper {
       }
     });
   }
+
+
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
@@ -199,4 +292,53 @@ class DBHelper {
       marker.addTo(newMap);
     return marker;
   }
+
+// update the favorite status 
+static updFavStatus(restaurantId, newFav) {
+  console.log('changed the status', newFav);
+
+  fetch(`http://localhost:1337/restaurants/${restaurantId}?is_favorite=${newFav}`, {method: 'PUT'}).then(()=>{
+    console.log('a change was made');
+
+    dbPromise.then(db => {
+      const tx = db.transaction('restaurants', 'readwrite'); 
+      const restaStore = tx.objectStore('restaurants');
+
+      restaStore.get(restaurantId).then(restaurant => {
+        restaurant.new_Fav = newFav;
+        restaStore.put(restaurant);
+      });
+    })
+  })
 }
+
+
+
+
+
+  // static fetchReviewsbyId(id) {
+  //   return fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`, {method:'GET'}).then(
+  //     response => {response.json()}).then(reviews => { debugger;
+  //       this.dbPromise().then(db => {
+  //         if(!db) return;
+
+  //         let tx = db.transaction('reviews', 'readwrite');
+  //         let restaStore = tx.objectStore('reviews');
+
+  //         if(Array.isArray(reviews)){
+  //           reviews.forEach( review => {
+  //             store.put(review);
+  //           });
+  //         } else {
+  //           store.put(reviews);
+  //         }
+  //       })
+  //     })
+  // }
+
+
+
+}
+
+
+

@@ -1,7 +1,6 @@
 let restaurants,
   neighborhoods,
-  cuisines,
-var DBHelper = `http://localhost:1337/restaurants`;
+  cuisines
 var newMap
 var markers = []
 
@@ -183,7 +182,25 @@ createRestaurantHTML = (restaurant) => {
     picture.append(image);
     // add picture element to li 
     li.append(picture);
- 
+
+    // ===========================
+    // Favorite button
+  const favBut = document.createElement('button');
+      favBut.className = 'fav-but';
+
+    let icon = document.createElement('i');
+      icon.className = 'fas fa-trophy';
+      favBut.append(icon);
+
+      favBut.onclick = () => {
+        const newFav = !restaurant.new_fav;
+        DBHelper.updFavStatus(restaurant.id, newFav);
+        restaurant.new_fav = !restaurant.new_fav
+        changeFavElementClass(favBut, restaurant.new_fav)
+      };
+      changeFavElementClass(favBut, restaurant.new_fav);
+    li.append(favBut);
+    
 
   const name = document.createElement('h2');
     name.innerHTML = restaurant.name;
@@ -226,5 +243,20 @@ createRestaurantHTML = (restaurant) => {
     }
   });
 } 
+
+// ==========================
+// toggle Favorite button
+changeFavElementClass = (c, favBut) =>{
+      if(!favBut) {
+        c.classList.remove('fav_yes');
+        c.classList.add('fav_no');
+        c.setAttribute('aria-label', 'marked as fav');
+      } else {
+        c.classList.remove('fav_no');
+        c.classList.add('fav_yes');
+        c.setAttribute('aria-label', 'removed fav');
+      }
+}
+
 
 

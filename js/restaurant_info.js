@@ -1,4 +1,5 @@
 let restaurant;
+// let review;
 var newMap;
 
 document.addEventListener('DOMContentLoaded', (event) => {  
@@ -46,7 +47,7 @@ fetchRestaurantFromURL = (callback) => {
     error = 'No restaurant id in URL'
     callback(error, null);
   } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    DBHelper.fetchRestaurantById(id, (error, restaurant) => { 
       self.restaurant = restaurant;
       if (!restaurant) {
         console.error(error);
@@ -57,6 +58,8 @@ fetchRestaurantFromURL = (callback) => {
     });
   }
 }
+
+
 
 /**
  * Create restaurant HTML and add it to the webpage
@@ -92,7 +95,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-  fillReviewsHTML();
+  DBHelper.fetchReviewsById(restaurant.id, fillReviewsHTML());
+  // fillReviewsHTML();
 }
 
 /**
@@ -115,10 +119,32 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
   }
 }
 
+fetchReviewFromURL = (callback) => {
+  if (self.restaurant) { // restaurant already fetched!
+    callback(null, self.restaurant)
+    return;
+  }
+  const id = getParameterByName('restaurant_id');
+  if (!id) { // no id found in URL
+    error = 'No review id in URL'
+    callback(error, null);
+  } else {
+    DBHelper.fetchReviewsById(id, (error, review) => {
+      self.review = review;
+      if (!review) {
+        console.error(error);
+        return;
+      }
+      fillReviewsHTML();
+      callback(null, review)
+    });
+  }
+}
+
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+fillReviewsHTML = (reviews = self.restaurant.review) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
@@ -187,3 +213,5 @@ getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+
