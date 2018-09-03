@@ -6,13 +6,13 @@
 
 // Restaurant URLS
 const Database_Url = `http://localhost:1337/`;
-const favor_Url = `http://localhost:1337/restaurants/?is_favorite=true`;
 const restById_Url = `http://localhost:1337/restaurants/<restaurant_id>`;
+const favor_Url = `http://localhost:1337/restaurants/?is_favorite=true`;
 
 // Review URLS
 const revs_Url = 'http://localhost:1337/reviews/';
-const revById_Url = `http://localhost:1337/reviews/?restaurant_id=<restaurant_id>`;
 const restRev_ById = `http://localhost:1337/reviews/<review_id>`;
+const revById_Url = `http://localhost:1337/reviews/?restaurant_id=<restaurant_id>`;
 
 const dbPromise = idb.open('restaDB', 21, upgradeDb => {
             switch (upgradeDb.oldVersion) {
@@ -76,56 +76,53 @@ class DBHelper {
 static fetchReviewsById(id, callback) {
 
     fetch(DBHelper.DATABASE_URL+`reviews/`).then(response => { 
-         return response.json().then(reviews => { 
+         response.json().then(reviews => { 
 
           // store reviews in the reviews Store
           dbPromise.then(db => { 
             const tx = db.transaction('reviews', 'readwrite'); 
             const revStore = tx.objectStore('reviews');
 
-            // loop thru each restaurant and add to the cache
+            // loop thru each review and add to the cache
             if (Array.isArray(reviews)){
-            reviews.forEach(review => { 
-            revStore.put(review);
+              reviews.forEach(review => { 
+              revStore.put(review);
             return tx.complete;
             });
 
            return revStore.getAll();
 
           }
-
-
           // console.log(reviews);
-            // display all data from the cache
-           
         }).then(revObj =>{
            console.log(revObj);
 
           dbPromise.then(db => { 
-          const tx = db.transaction('reviews', 'readonly').objectStore('reviews'); 
+          const tx = db.transaction('reviews', 'readwrite').objectStore('reviews'); 
           const revIndex = tx.index('restaurant_id');
 
           revIndex.openCursor().onsuccess = event => {
             let cursor = event.target.result;
 
-
+            // map thru each review 
             revObj.map(revId =>{
-               return revIndex.getAll('restaurant_id');
-            })
+              // if the event target matches a review or restaurant.id then get all those reviews
+              if (cursor === revObj) {
+                revIndex.getAll('restaurant_id');
+                return tx.complete;
 
-            if (cursor === restaurant_id) {
-              cursor.continue();  
-              
-            }
+              cursor.continue();   
+              }
+               
+            });
 
             return revIndex.getAll();
               
           }
-
+          
                               
         });
         
-
         }).catch( error => { // Oops!. Got an error from server.
 
           // return reviews by restaurantId index 
