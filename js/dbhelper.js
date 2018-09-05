@@ -14,7 +14,7 @@ const revs_Url = 'http://localhost:1337/reviews/';
 const restRev_ById = `http://localhost:1337/reviews/<review_id>`;
 const revById_Url = `http://localhost:1337/reviews/?restaurant_id=<restaurant_id>`;
 
-const dbPromise = idb.open('restaDB', 21, upgradeDb => {
+const dbPromise = idb.open('restaDB', 22, upgradeDb => {
             switch (upgradeDb.oldVersion) {
               case 0:
               upgradeDb.createObjectStore('restaurants', {
@@ -75,9 +75,8 @@ class DBHelper {
 
 static fetchReviewsById(id, callback) {
 
-    fetch(DBHelper.DATABASE_URL+`reviews/`).then(response => { 
+    fetch(DBHelper.DATABASE_URL+`reviews/`+ `?restaurant_id=`+ id).then(response => { 
          response.json().then(reviews => { 
-
           // store reviews in the reviews Store
           dbPromise.then(db => { 
             const tx = db.transaction('reviews', 'readwrite'); 
@@ -101,28 +100,32 @@ static fetchReviewsById(id, callback) {
           const tx = db.transaction('reviews', 'readwrite').objectStore('reviews'); 
           const revIndex = tx.index('restaurant_id');
 
-          revIndex.openCursor().onsuccess = event => {
-            let cursor = event.target.result;
+          const request = revIndex.openCursor();
+
+          request.onsuccess = event => { 
+            var cursor = event.target.result;
 
             // map thru each review 
             revObj.map(revId =>{
               // if the event target matches a review or restaurant.id then get all those reviews
-              if (cursor === revObj) {
-                revIndex.getAll('restaurant_id');
-                return tx.complete;
+              if (cursor.value === restaurant_id) {
 
-              cursor.continue();   
+                cursor.continue();  
+              return revIndex.getAll();
+              } else {
+
+                return revIndex.getAll('restaurant_id');
+
               }
-               
+              callback(null, reviews);
             });
 
-            return revIndex.getAll();
               
           }
           
                               
         });
-        
+
         }).catch( error => { // Oops!. Got an error from server.
 
           // return reviews by restaurantId index 
@@ -153,7 +156,8 @@ static fetchRestaurantById(id, callback) {
         const restaurant = restaurants.find(r => r.id == id);
 
         if (restaurant) { 
-        // Got the restaurant  
+        // Got the restaurant
+                                        
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);

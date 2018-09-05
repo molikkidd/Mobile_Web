@@ -1,5 +1,5 @@
 let restaurant;
-// let review;
+let review;
 var newMap;
 
 document.addEventListener('DOMContentLoaded', (event) => {  
