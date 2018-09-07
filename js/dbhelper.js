@@ -12,9 +12,9 @@ const favor_Url = `http://localhost:1337/restaurants/?is_favorite=true`;
 // Review URLS
 const revs_Url = 'http://localhost:1337/reviews/';
 const restRev_ById = `http://localhost:1337/reviews/<review_id>`;
-const revById_Url = `http://localhost:1337/reviews/?restaurant_id=<restaurant_id>`;
+const revById_Url = `http://localhost:1337/reviews/?restaurant_id=`;
 
-const dbPromise = idb.open('restaDB', 22, upgradeDb => {
+const dbPromise = idb.open('restaDB', 23, upgradeDb => {
             switch (upgradeDb.oldVersion) {
               case 0:
               upgradeDb.createObjectStore('restaurants', {
@@ -26,7 +26,7 @@ const dbPromise = idb.open('restaDB', 22, upgradeDb => {
                 keyPath: 'id'
               });
 
-              reviews.createIndex('restaurant_id', 'restaurant_id', {
+              reviews.createIndex('restaurant', 'restaurant_id', {
                 autoIncrement: true
               });
 
@@ -73,73 +73,6 @@ class DBHelper {
   });
 };
 
-static fetchReviewsById(id, callback) {
-
-    fetch(DBHelper.DATABASE_URL+`reviews/`+ `?restaurant_id=`+ id).then(response => { 
-         response.json().then(reviews => { 
-          // store reviews in the reviews Store
-          dbPromise.then(db => { 
-            const tx = db.transaction('reviews', 'readwrite'); 
-            const revStore = tx.objectStore('reviews');
-
-            // loop thru each review and add to the cache
-            if (Array.isArray(reviews)){
-              reviews.forEach(review => { 
-              revStore.put(review);
-            return tx.complete;
-            });
-
-           return revStore.getAll();
-
-          }
-          // console.log(reviews);
-        }).then(revObj =>{
-           console.log(revObj);
-
-          dbPromise.then(db => { 
-          const tx = db.transaction('reviews', 'readwrite').objectStore('reviews'); 
-          const revIndex = tx.index('restaurant_id');
-
-          const request = revIndex.openCursor();
-
-          request.onsuccess = event => { 
-            var cursor = event.target.result;
-
-            // map thru each review 
-            revObj.map(revId =>{
-              // if the event target matches a review or restaurant.id then get all those reviews
-              if (cursor.value === restaurant_id) {
-
-                cursor.continue();  
-              return revIndex.getAll();
-              } else {
-
-                return revIndex.getAll('restaurant_id');
-
-              }
-              callback(null, reviews);
-            });
-
-              
-          }
-          
-                              
-        });
-
-        }).catch( error => { // Oops!. Got an error from server.
-
-          // return reviews by restaurantId index 
-
-            callback(error, reviews);
-
-            console.log(error);
-        }); 
-
-      })
-    });
-}
-
-
   /**
    * Fetch a restaurant by its ID.
    */
@@ -165,6 +98,76 @@ static fetchRestaurantById(id, callback) {
       }
     });
   }
+
+static fetchAllReviews(id,callback) {
+  fetch(revs_Url).then(response => { 
+         return response.json().then(reviews => { 
+
+          console.log(reviews);
+
+          // store reviews in the reviews Store
+          dbPromise.then(db => { 
+            const tx = db.transaction('reviews', 'readwrite'); 
+            const revStore = tx.objectStore('reviews');
+
+              // loop thru each review and add to the cache
+              if (Array.isArray(reviews)) {
+                reviews.map(review => { 
+                revStore.put(review); 
+                return tx.complete;
+                });
+             return revStore.getAll('id');
+              }
+
+            callback(null, reviews);
+
+          })
+
+        });
+
+        }).catch(error => {
+          callback(null, error);
+        })
+}
+
+// static addReview(review) {
+//   let RevObj = {
+//     name:'addReview',
+//     data: review,
+//     object_type: 'review' 
+//      };
+// }
+
+
+static fetchReviewsById(id, callback) {
+
+    fetch(revById_Url + id).then(response => { 
+         return response.json().then(reviews => { 
+          // store reviews in the reviews Store                               
+           console.log(reviews);
+
+          dbPromise.then(db => { 
+          const tx = db.transaction('reviews', 'readwrite').objectStore('reviews'); 
+          const revIndex = tx.index('restaurant');
+
+
+          return revIndex.getAll('restaurant_id');
+        
+        });
+           callback(null, reviews); 
+        }).catch( error => { // Oops!. Got an error from server.
+
+          // return reviews by restaurantId index 
+
+            callback(null, error);
+
+            console.log(error);
+        }); 
+      });
+}
+
+
+
 
 
 

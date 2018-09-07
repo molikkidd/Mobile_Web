@@ -1,5 +1,5 @@
 let restaurant;
-let review;
+// let review;
 var newMap;
 
 document.addEventListener('DOMContentLoaded', (event) => {  
@@ -59,6 +59,27 @@ fetchRestaurantFromURL = (callback) => {
   }
 }
 
+fetchReviewFromURL = (callback) => {
+  if (self.review) { // restaurant already fetched!
+    callback(null, self.review)
+    return;
+  }
+  const id = getParameterByName('id');
+  if (!id) { // no id found in URL
+    error = 'No review id in URL'
+    callback(error, null);
+  } else {
+    DBHelper.fetchAllReviews(id, (error, review) => {
+      self.review = review;
+      if (!review) {
+        console.error(error);
+        return;
+      }
+      fillReviewsHTML();
+      callback(null, review)
+    });
+  }
+}
 
 
 /**
@@ -95,10 +116,12 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-  DBHelper.fetchReviewsById(restaurant.id, fillReviewsHTML());
-  // fillReviewsHTML();
+DBHelper.fetchAllReviews(restaurant.id, fillReviewsHTML());
+  
+          
 }
-
+    
+    
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
@@ -119,27 +142,32 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
   }
 }
 
-fetchReviewFromURL = (callback) => {
-  if (self.restaurant) { // restaurant already fetched!
-    callback(null, self.restaurant)
-    return;
+addReview = () => {
+
+  event.preventDefault();
+
+  let restaurantId = getParameterByName('id');
+  let name = document.getElementById('review-author').value;
+  let rating = document.querySelector('rating-select').value;
+  let comments = document.querySelector('review-comments').value;
+
+  const review = [
+  name, rating, comments, restaurantId
+  ];
+
+  const frontEndReview = {
+    restaurant_id: parseInt(revivew[3]),
+    rating: parseInt(review[1]),
+    name: review[0],
+    comments: review[2].subString(0,300),
+    createdAt: newDate()
   }
-  const id = getParameterByName('restaurant_id');
-  if (!id) { // no id found in URL
-    error = 'No review id in URL'
-    callback(error, null);
-  } else {
-    DBHelper.fetchReviewsById(id, (error, review) => {
-      self.review = review;
-      if (!review) {
-        console.error(error);
-        return;
-      }
-      fillReviewsHTML();
-      callback(null, review)
-    });
-  }
+  DBHelper.addReview(frontEndReview);
+  addReviewHTML(frontEndReview);
+  document.getElementById('review-form').reset();
 }
+
+
 
 /**
  * Create all reviews HTML and add them to the webpage.
@@ -168,6 +196,15 @@ fillReviewsHTML = (reviews = self.restaurant.review) => {
  */
 createReviewHTML = (review) => {
   const li = document.createElement('li');
+
+  // Use when Offline
+  if (!navigation.onLine) {
+  const connectStat = document.createElement('p');
+    connectStat.classList.add('offline_label');
+    connectStat.innerHTML = "Offline";
+      li.classList.add('reviews_offline');
+      li.appendChild(connectStat);
+   }
   const name = document.createElement('p');
   name.innerHTML = review.name;
   li.appendChild(name);
