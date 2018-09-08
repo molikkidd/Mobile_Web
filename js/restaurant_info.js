@@ -116,7 +116,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-DBHelper.fetchAllReviews(restaurant.id, fillReviewsHTML());
+  // console.log(DBHelper.fetchAllReviews( fillReviewsHTML(reviews)));
+DBHelper.fetchAllReviews(self.restaurant.id, fillReviewsHTML());
   
           
 }

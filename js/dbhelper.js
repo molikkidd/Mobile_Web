@@ -73,6 +73,35 @@ class DBHelper {
   });
 };
 
+static fetchAllReviews(id, callback) {
+  fetch(revById_Url + id).then(response => { 
+         return response.json()}).then(reviews => { 
+
+          console.log(reviews);
+
+          // store reviews in the reviews Store
+          dbPromise.then(db => { 
+            const tx = db.transaction('reviews', 'readwrite'); 
+            const revStore = tx.objectStore('reviews');
+
+              // loop thru each review and add to the cache
+              if (Array.isArray(reviews)) {
+                reviews.map(review => { 
+                revStore.put(review); 
+                console.log(review);
+                return tx.complete;
+                });
+              }
+              console.log(revStore.getAll());
+              return revStore.getAll();
+              console.log(revStore.getAll());
+
+              callback(null, reviews);
+          });
+        }).catch(error => {
+          callback(null, error);
+        })
+}
   /**
    * Fetch a restaurant by its ID.
    */
@@ -80,9 +109,6 @@ static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
     DBHelper.fetchRestaurants((error, restaurants) => {
       // open idb and get restaurants by ID then add them
-
-
-
       if (error) {
         callback(error, null);
       } else {
@@ -99,77 +125,32 @@ static fetchRestaurantById(id, callback) {
     });
   }
 
-static fetchAllReviews(id,callback) {
-  fetch(revs_Url).then(response => { 
-         return response.json().then(reviews => { 
+// static fetchReviewsById(id, callback) {
 
-          console.log(reviews);
+//     fetch(revById_Url + id).then(response => { 
+//          return response.json().then(reviews => { 
+//           // store reviews in the reviews Store                               
+//            console.log(reviews);
 
-          // store reviews in the reviews Store
-          dbPromise.then(db => { 
-            const tx = db.transaction('reviews', 'readwrite'); 
-            const revStore = tx.objectStore('reviews');
-
-              // loop thru each review and add to the cache
-              if (Array.isArray(reviews)) {
-                reviews.map(review => { 
-                revStore.put(review); 
-                return tx.complete;
-                });
-             return revStore.getAll('id');
-              }
-
-            callback(null, reviews);
-
-          })
-
-        });
-
-        }).catch(error => {
-          callback(null, error);
-        })
-}
-
-// static addReview(review) {
-//   let RevObj = {
-//     name:'addReview',
-//     data: review,
-//     object_type: 'review' 
-//      };
-// }
+//           dbPromise.then(db => { 
+//           const tx = db.transaction('reviews', 'readwrite').objectStore('reviews'); 
+//           const revIndex = tx.index('restaurant');
 
 
-static fetchReviewsById(id, callback) {
-
-    fetch(revById_Url + id).then(response => { 
-         return response.json().then(reviews => { 
-          // store reviews in the reviews Store                               
-           console.log(reviews);
-
-          dbPromise.then(db => { 
-          const tx = db.transaction('reviews', 'readwrite').objectStore('reviews'); 
-          const revIndex = tx.index('restaurant');
-
-
-          return revIndex.getAll('restaurant_id');
+//           return revIndex.getAll();
         
-        });
-           callback(null, reviews); 
-        }).catch( error => { // Oops!. Got an error from server.
+//         });
+//            callback(null, reviews); 
+//         }).catch( error => { // Oops!. Got an error from server.
 
-          // return reviews by restaurantId index 
+//           // return reviews by restaurantId index 
 
-            callback(null, error);
+//             callback(null, error);
 
-            console.log(error);
-        }); 
-      });
-}
-
-
-
-
-
+//             console.log(error);
+//         }); 
+//       });
+// }
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
@@ -316,7 +297,13 @@ static updFavStatus(restaurantId, newFav) {
   })
 }
 
-
+// static addReview(review) {
+//   let RevObj = {
+//     name:'addReview',
+//     data: review,
+//     object_type: 'review' 
+//      };
+// }
 
 
 
