@@ -36,22 +36,37 @@ Start the server
 You should now have access to your API server environment
 debug: Environment : development debug: Port : 1337
 
+
+Steps to run the Application
+1st Run node server 
+
+2nd Run the http-server -p 8000 .
+
+cert.pem and key.pem are for https.
+
 Endpoints
 GET Endpoints
 Get all restaurants
 http://localhost:1337/restaurants/
+
 Get favorite restaurants
 http://localhost:1337/restaurants/?is_favorite=true
+
 Get a restaurant by id
 http://localhost:1337/restaurants/<restaurant_id>
+
 Get all reviews for a restaurant
 http://localhost:1337/reviews/?restaurant_id=<restaurant_id>
+
 Get all restaurant reviews
 http://localhost:1337/reviews/
+
 Get a restaurant review by id
 http://localhost:1337/reviews/<review_id>
+
 Get all reviews for a restaurant
 http://localhost:1337/reviews/?restaurant_id=<restaurant_id>
+
 POST Endpoints
 Create a new restaurant review
 http://localhost:1337/reviews/
@@ -62,11 +77,14 @@ Parameters
     "rating": <rating>,
     "comments": <comment_text>
 }
+
 PUT Endpoints
 Favorite a restaurant
 http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=true
+
 Unfavorite a restaurant
 http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=false
+
 Update a restaurant review
 http://localhost:1337/reviews/<review_id>
 Parameters
@@ -90,12 +108,3 @@ Accessibility: >90
 
 Best Practices: >90
 
-warning!
-To test it. Be careful on the caches etc. Clear everything first. Test it ( reload the page ) with the site down. Run the http-server ( Do Not run the gulp for the Audits test ). Now you are ready for the Audits ( Lighthouse tests).
-
-Steps to run correctly.
-1st Run node server ( check for the sails ).
-
-2nd Run the http-server -p 8000 ( if you want just run gulp ).
-
-cert.pem and key.pem are for https.
