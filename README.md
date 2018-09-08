@@ -6,10 +6,13 @@
 Three Stage Course Material Project - Restaurant Reviews
 Local Development API Server
 Usage
+
 Get Restaurants
 curl "http://localhost:1337/restaurants"
+
 Get Restaurants by id
 curl "http://localhost:1337/restaurants/{3}"
+
 Architecture
 Local server
 
@@ -19,6 +22,7 @@ Contributors
 Brandy Lee Camacho - Technical Project Manager
 David Harris - Web Services Lead
 Omar Albeik - Frontend engineer
+
 Getting Started
 Development local API Server
 Location of server = /server Server depends on node.js LTS Version: v6.11.2 , npm, and sails.js Please make sure you have these installed before proceeding forward.
