@@ -23,13 +23,11 @@ const dbPromise = idb.open('restaDB', 23, upgradeDb => {
                 
               case 1: 
               const reviews = upgradeDb.createObjectStore('reviews', {
-                keyPath: 'id'
-              });
-
-              reviews.createIndex('restaurant', 'restaurant_id', {
+                keyPath: 'id',
                 autoIncrement: true
               });
 
+              reviews.createIndex('restaurant', 'restaurant_id');
             }
           });
 
@@ -62,6 +60,7 @@ class DBHelper {
             });
             // display all data from the cache
             callback(null, restaurants);
+            console.log(restaStore.getAll())
             return restaStore.getAll();
         }).catch( error => { // Oops!. Got an error from server.
             // return all restaurants when its 
@@ -73,35 +72,7 @@ class DBHelper {
   });
 };
 
-static fetchAllReviews(id, callback) {
-  fetch(revById_Url + id).then(response => { 
-         return response.json()}).then(reviews => { 
 
-          console.log(reviews);
-
-          // store reviews in the reviews Store
-          dbPromise.then(db => { 
-            const tx = db.transaction('reviews', 'readwrite'); 
-            const revStore = tx.objectStore('reviews');
-
-              // loop thru each review and add to the cache
-              if (Array.isArray(reviews)) {
-                reviews.map(review => { 
-                revStore.put(review); 
-                console.log(review);
-                return tx.complete;
-                });
-              }
-              console.log(revStore.getAll());
-              return revStore.getAll();
-              console.log(revStore.getAll());
-
-              callback(null, reviews);
-          });
-        }).catch(error => {
-          callback(null, error);
-        })
-}
   /**
    * Fetch a restaurant by its ID.
    */
@@ -113,6 +84,7 @@ static fetchRestaurantById(id, callback) {
         callback(error, null);
       } else {
         const restaurant = restaurants.find(r => r.id == id);
+              console.log(restaurant);
 
         if (restaurant) { 
         // Got the restaurant
@@ -123,34 +95,34 @@ static fetchRestaurantById(id, callback) {
         }
       }
     });
-  }
 
-// static fetchReviewsById(id, callback) {
+    // also fetch the reviews by ID
+    fetch(revById_Url + id).then(response => { 
+         return response.json().then(reviews => { 
+          console.log('fetched the reviews from the url:', reviews);
+                        console.log('and this was the url id:', id);
 
-//     fetch(revById_Url + id).then(response => { 
-//          return response.json().then(reviews => { 
-//           // store reviews in the reviews Store                               
-//            console.log(reviews);
+          // store reviews in the reviews Store
+          dbPromise.then(db => { 
+            const tx = db.transaction('reviews', 'readwrite'); 
+            const revStore = tx.objectStore('reviews');
 
-//           dbPromise.then(db => { 
-//           const tx = db.transaction('reviews', 'readwrite').objectStore('reviews'); 
-//           const revIndex = tx.index('restaurant');
+              // loop thru each review and add to the cache
+              if (Array.isArray(reviews)) {
+                reviews.map(review => { 
+                revStore.put(review); 
+                return tx.complete;
+                });
+              }
+          });
+        }).catch(error => {
+          console.log(error);
+           });
+    });
+
+    }
 
 
-//           return revIndex.getAll();
-        
-//         });
-//            callback(null, reviews); 
-//         }).catch( error => { // Oops!. Got an error from server.
-
-//           // return reviews by restaurantId index 
-
-//             callback(null, error);
-
-//             console.log(error);
-//         }); 
-//       });
-// }
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
@@ -278,12 +250,54 @@ static fetchRestaurantById(id, callback) {
     return marker;
   }
 
+
+
+
+static fetchReviewsById(id) {
+  console.log('this is the fetch reviews function:', id);
+        return dbPromise.then(db => { 
+              const tx = db.transaction('reviews', 'readwrite').objectStore('reviews'); 
+              const revIndex = tx.index('restaurant');
+
+              if (!id) {
+                return;
+              } else {
+                console.log('what is returned to fillReviewsHTML:', revIndex.getAll(id))
+                return revIndex.getAll(id);
+              }
+        })
+}
+
+// add new review to the page
+static addNewReview(review) {
+    console.log('this is what is returned to the addReview:', review);
+
+    const id = self.restaurant.id;
+
+  fetch(revById_Url + id, {
+        method: 'POST', 
+        headers: new Headers ({'Content-Type': 'application/json;'}),
+        body: JSON.stringify(review)
+  }).then(() => {
+      dbPromise.then(db => { 
+            const tx = db.transaction('reviews', 'readwrite')
+            const revStore = tx.objectStore('reviews');
+
+              // loop thru each review and add to the cache            
+                revStore.put(review); 
+                return tx.complete;
+    })
+  })
+
+}
+ 
+
 // update the favorite status 
 static updFavStatus(restaurantId, newFav) {
   console.log('changed the status', newFav);
 
   fetch(`http://localhost:1337/restaurants/${restaurantId}?is_favorite=${newFav}`, {method: 'PUT'}).then(()=>{
-    console.log('a change was made');
+    console.log('added to restaurant:', restaurantId, ' and changed the is_favorite');
 
     dbPromise.then(db => {
       const tx = db.transaction('restaurants', 'readwrite'); 
@@ -296,36 +310,6 @@ static updFavStatus(restaurantId, newFav) {
     })
   })
 }
-
-// static addReview(review) {
-//   let RevObj = {
-//     name:'addReview',
-//     data: review,
-//     object_type: 'review' 
-//      };
-// }
-
-
-
-  // static fetchReviewsbyId(id) {
-  //   return fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`, {method:'GET'}).then(
-  //     response => {response.json()}).then(reviews => { debugger;
-  //       this.dbPromise().then(db => {
-  //         if(!db) return;
-
-  //         let tx = db.transaction('reviews', 'readwrite');
-  //         let restaStore = tx.objectStore('reviews');
-
-  //         if(Array.isArray(reviews)){
-  //           reviews.forEach( review => {
-  //             store.put(review);
-  //           });
-  //         } else {
-  //           store.put(reviews);
-  //         }
-  //       })
-  //     })
-  // }
 
 
 

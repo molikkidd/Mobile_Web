@@ -192,12 +192,15 @@ createRestaurantHTML = (restaurant) => {
       icon.className = 'fas fa-trophy';
       favBut.append(icon);
 
-      favBut.onclick = () => {
-        const newFav = !restaurant.new_fav;
-        DBHelper.updFavStatus(restaurant.id, newFav);
-        restaurant.new_fav = !restaurant.new_fav
-        changeFavElementClass(favBut, restaurant.new_fav)
-      };
+    favBut.onclick = () => {
+      const newFav = !restaurant.new_fav;
+
+      
+      DBHelper.updFavStatus(restaurant.id, newFav);
+      restaurant.new_fav = !restaurant.new_fav
+      changeFavElementClass(favBut, restaurant.new_fav)
+    };
+      
       changeFavElementClass(favBut, restaurant.new_fav);
     li.append(favBut);
     

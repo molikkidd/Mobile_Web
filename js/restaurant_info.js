@@ -1,11 +1,15 @@
 let restaurant;
-// let review;
 var newMap;
 
 document.addEventListener('DOMContentLoaded', (event) => {  
   initMap();
+    addReview();
+
 });
 
+// document.addEventListener('onClick', (event)=>{
+//   addReview();
+// });
 /**
  * Initialize leaflet map
  */
@@ -48,6 +52,7 @@ fetchRestaurantFromURL = (callback) => {
     callback(error, null);
   } else {
     DBHelper.fetchRestaurantById(id, (error, restaurant) => { 
+      console.log(id);
       self.restaurant = restaurant;
       if (!restaurant) {
         console.error(error);
@@ -58,29 +63,6 @@ fetchRestaurantFromURL = (callback) => {
     });
   }
 }
-
-fetchReviewFromURL = (callback) => {
-  if (self.review) { // restaurant already fetched!
-    callback(null, self.review)
-    return;
-  }
-  const id = getParameterByName('id');
-  if (!id) { // no id found in URL
-    error = 'No review id in URL'
-    callback(error, null);
-  } else {
-    DBHelper.fetchAllReviews(id, (error, review) => {
-      self.review = review;
-      if (!review) {
-        console.error(error);
-        return;
-      }
-      fillReviewsHTML();
-      callback(null, review)
-    });
-  }
-}
-
 
 /**
  * Create restaurant HTML and add it to the webpage
@@ -116,10 +98,13 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-  // console.log(DBHelper.fetchAllReviews( fillReviewsHTML(reviews)));
-DBHelper.fetchAllReviews(self.restaurant.id, fillReviewsHTML());
-  
-          
+
+DBHelper.fetchReviewsById(self.restaurant.id).then(res => {
+    self.reviews = res;
+    fillReviewsHTML();
+  });
+
+                 
 }
     
     
@@ -127,6 +112,8 @@ DBHelper.fetchAllReviews(self.restaurant.id, fillReviewsHTML());
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
 fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
+let restaurant = self.restaurant;
+
   const hours = document.getElementById('restaurant-hours');
   for (let key in operatingHours) {
     const row = document.createElement('tr');
@@ -138,42 +125,68 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
     const time = document.createElement('td');
     time.innerHTML = operatingHours[key];
     row.appendChild(time);
-
     hours.appendChild(row);
   }
-}
+    const favBut = document.createElement('button');
+    favBut.className = 'fav-but';
+    hours.appendChild(favBut);
 
+    let icon = document.createElement('i');
+    icon.className = 'fas fa-trophy';
+    favBut.append(icon);
+
+    favBut.onclick = () => {
+    const newFav = !restaurant.new_fav;
+    DBHelper.updFavStatus(restaurant.id, newFav);
+    restaurant.new_fav = !restaurant.new_fav
+    changeFavElementClass(favBut, restaurant.new_fav)
+}
+}
 addReview = () => {
 
-  event.preventDefault();
+  // event.preventDefault();
 
   let restaurantId = getParameterByName('id');
-  let name = document.getElementById('review-author').value;
-  let rating = document.querySelector('rating-select').value;
-  let comments = document.querySelector('review-comments').value;
+  let name = document.getElementById('reviewer-name').value;
+  let rating = document.getElementById('rating').value;
+  let comments = document.getElementById('new-comment').value;
 
   const review = [
   name, rating, comments, restaurantId
   ];
 
-  const frontEndReview = {
-    restaurant_id: parseInt(revivew[3]),
+  const displayNewReview = {
+    restaurant_id: parseInt(review[3]),
     rating: parseInt(review[1]),
     name: review[0],
-    comments: review[2].subString(0,300),
-    createdAt: newDate()
+    comments: review[2],
+    createdAt: new Date()
   }
-  DBHelper.addReview(frontEndReview);
-  addReviewHTML(frontEndReview);
-  document.getElementById('review-form').reset();
-}
+if (!navigator.onLine) {
 
+  DBHelper.addNewReview(displayNewReview);
+  createReviewHTML(displayNewReview);
+  document.getElementById('rev-form').reset( 
+    alertify.error('OFFLINE = Review added to DB')
+  );
+
+} else {
+
+  DBHelper.addNewReview(displayNewReview);
+  createReviewHTML(displayNewReview);
+  document.getElementById('rev-form').reset(  
+    alertify.success('New review was added')
+  ); 
+}
+ 
+}
 
 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.review) => {
+fillReviewsHTML = (reviews = self.reviews) => {
+console.log(self.reviews);
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
@@ -198,20 +211,13 @@ fillReviewsHTML = (reviews = self.restaurant.review) => {
 createReviewHTML = (review) => {
   const li = document.createElement('li');
 
-  // Use when Offline
-  if (!navigation.onLine) {
-  const connectStat = document.createElement('p');
-    connectStat.classList.add('offline_label');
-    connectStat.innerHTML = "Offline";
-      li.classList.add('reviews_offline');
-      li.appendChild(connectStat);
-   }
   const name = document.createElement('p');
   name.innerHTML = review.name;
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  let newDate = new Date(review.createdAt).toString();
+  date.innerHTML = newDate;
   li.appendChild(date);
 
   const rating = document.createElement('p');
