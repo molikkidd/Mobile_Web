@@ -141,6 +141,9 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   addMarkersToMap();
 }
 
+// ==========================
+// toggle Favorite button
+
 
 /**
  * Create restaurant HTML.
@@ -185,25 +188,26 @@ createRestaurantHTML = (restaurant) => {
 
     // ===========================
     // Favorite button
-  const favBut = document.createElement('button');
-      favBut.className = 'fav-but';
+  const newFavourite = document.createElement('button');
+      newFavourite.classList.add('fav_yes');
 
     let icon = document.createElement('i');
       icon.className = 'fas fa-trophy';
-      favBut.append(icon);
+      newFavourite.append(icon);
 
-    favBut.onclick = () => {
-      const newFav = !restaurant.new_fav;
+    newFavourite.onclick = () => {
+      const newFav = !restaurant.is_favorite;
 
-      
+
       DBHelper.updFavStatus(restaurant.id, newFav);
-      restaurant.new_fav = !restaurant.new_fav
-      changeFavElementClass(favBut, restaurant.new_fav)
+      restaurant.is_favorite = !restaurant.is_favorite
+      changeFavElementClass(newFavourite, restaurant.is_favorite);
     };
       
-      changeFavElementClass(favBut, restaurant.new_fav);
-    li.append(favBut);
+      changeFavElementClass(newFavourite, restaurant.is_favorite);
+    li.append(newFavourite);
     
+
 
   const name = document.createElement('h2');
     name.innerHTML = restaurant.name;
@@ -233,6 +237,22 @@ createRestaurantHTML = (restaurant) => {
   return li
 }
 
+changeFavElementClass = (el, fav) =>{
+
+  console.log(el, fav);
+
+      if(fav =='false') {
+        el.classList.remove('fav_yes');
+        el.classList.add('fav_no');
+        el.setAttribute('aria-label', 'mark as fav');
+
+      } else {
+
+        el.classList.remove('fav_no');
+        el.classList.add('fav_yes');
+        el.setAttribute('aria-label', 'removed fav');
+      }
+}
 /**
  * Add markers for current restaurants to the map.
  */
@@ -247,19 +267,7 @@ createRestaurantHTML = (restaurant) => {
   });
 } 
 
-// ==========================
-// toggle Favorite button
-changeFavElementClass = (c, favBut) =>{
-      if(!favBut) {
-        c.classList.remove('fav_yes');
-        c.classList.add('fav_no');
-        c.setAttribute('aria-label', 'marked as fav');
-      } else {
-        c.classList.remove('fav_no');
-        c.classList.add('fav_yes');
-        c.setAttribute('aria-label', 'removed fav');
-      }
-}
+
 
 
 

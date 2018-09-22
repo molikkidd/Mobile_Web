@@ -181,9 +181,24 @@
   /*align-content: center;*/
 }
 
-.fav-but {
+.fav_yes {
   
     background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 40%;
+    border-radius: 50%;
+  
+}
+
+.fav_no {
+  
+    background-color: steelblue;
     border: none;
     color: white;
     padding: 20px;
