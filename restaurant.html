@@ -6,14 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-type" Content="text/html" charset="utf-8">
   <!-- Normalize.css for better cross-browser consistency -->
+  <meta name="theme-color" content="#899033">
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
   <!-- <link rel="stylesheet" href="/dist/css/allcss.css"> -->
-    <link rel="stylesheet" href="/css/response.css">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/restaDetails.css">
+    <link rel="stylesheet" href="/dist/css/response.css">
+    <link rel="stylesheet" href="/dist/css/styles.css">
+    <link rel="stylesheet" href="/dist/css/restaDetails.css">
 
-    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/dist/css/form.css">
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css"/>
 
   <!-- leaflet.js for mapbox -->
@@ -57,19 +59,19 @@
       
       <label>Name:</label>
       <div>
-        <input id="reviewer-name" placeholder="Your Name" type="text">
+        <input id="reviewer-name" placeholder="Your Name" type="text" aria-label="reviewer name">
       </div>
         <!-- rating -->
       
       <label>Rating:</label>
       <div>
-        <input id="rating" placeholder="Rating out of 5" type="number" max="5">
+        <input id="rating" placeholder="Rating out of 5" type="number" max="5" aria-label="rating">
       </div>
         <!-- comment -->
      
       <label>Review:</label>
        <div>
-        <textarea id="new-comment" placeholder="Your Review.." type="text"></textarea>
+        <textarea id="new-comment" placeholder="Your Review.." type="text" aria-label="Add new comment"></textarea>
       </div>
         <!-- submit button -->
           <!-- <input id="submit" type="button" onclick="addReview()"> -->
@@ -92,8 +94,8 @@
   <script src="restaSW.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.4/lazysizes.min.js" async></script>
 
-  <script type="text/javascript" src="js/dbhelper.js"></script>
-  <script type="text/javascript" src="js/restaurant_info.js"></script>
+  <script type="text/javascript" src="/dist/js/dbhelper.js"></script>
+  <script type="text/javascript" src="/dist/js/restaurant_info.js"></script>
   <!-- <script type="text/javascript" src="js/form.js"></script> -->
   
  <!-- leaflet.js for mapbox -->

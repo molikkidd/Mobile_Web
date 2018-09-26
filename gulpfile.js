@@ -90,7 +90,6 @@ gulp.task('styles', function () {
     // Auto-prefix css styles for cross browser compatibility
     .pipe(autoprefixer()) 
     .pipe(csso())
-    .pipe(concat('allcss.css'))
     .pipe(gulp.dest('./dist/css'))
     .pipe(browserSync.stream());
 
@@ -100,7 +99,7 @@ gulp.task('styles', function () {
 
 
 gulp.task('scripts', function() {
-  return gulp.src('./js/idbLib.js')
+  return gulp.src('./js/**/*.js')
     .pipe(uglify())
     // .pipe(concat('all.js'))
     .pipe(gulp.dest('./dist/js'));
