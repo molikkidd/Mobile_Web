@@ -85,23 +85,6 @@ if(event.request.method === "POST"){
     );  
 });
 
-// self.addEventListener('fetch', function(event) {
-//       if(event.request.method === "POST"){
-//          var newObj = {};
-
-//                event.request.formData().then(formData => {
-
-//                 for(var pair of formData.entries()) {
-//                   var key = pair[0];
-//                   var value =  pair[1];
-//                   newObj[key] = value;
-//                 }
-
-//               })
-//       }
-// })
-
-
 self.addEventListener('activate', event => {
   // delete any caches that aren't in newCaches
   event.waitUntil(

@@ -141,8 +141,12 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   addMarkersToMap();
 }
 
-// ==========================
-// toggle Favorite button
+
+
+// Add new restaurant to page.
+// addNewRestarant= () => {
+
+// }
 
 
 /**
@@ -189,26 +193,29 @@ createRestaurantHTML = (restaurant) => {
     // ===========================
     // Favorite button
   const newFavourite = document.createElement('button');
-      newFavourite.classList.add('fav_yes');
 
     let icon = document.createElement('i');
       icon.className = 'fas fa-trophy';
       newFavourite.append(icon);
 
+// Upon clicking the sumbit button
     newFavourite.onclick = () => {
-      const newFav = !restaurant.is_favorite;
-
-
+      var newFav = restaurant.is_favorite;
+      if (newFav) {
+          newFav = 'true';
+          alertify.success('A new Favorite');
+      } else {
+          newFav = 'false';
+          alertify.warning('Removed Favorite');
+      }
+      console.log(newFav);
+      applyNewClass(newFavourite, newFav);
       DBHelper.updFavStatus(restaurant.id, newFav);
-      restaurant.is_favorite = !restaurant.is_favorite
-      changeFavElementClass(newFavourite, restaurant.is_favorite);
-    };
-      
-      changeFavElementClass(newFavourite, restaurant.is_favorite);
+      restaurant.is_favorite = !restaurant.is_favorite;
+    }; 
+      applyNewClass(newFavourite, restaurant.is_favorite);
     li.append(newFavourite);
     
-
-
   const name = document.createElement('h2');
     name.innerHTML = restaurant.name;
     li.append(name);
@@ -237,21 +244,20 @@ createRestaurantHTML = (restaurant) => {
   return li
 }
 
-changeFavElementClass = (el, fav) =>{
+applyNewClass = (el, newFav) =>{
 
-  console.log(el, fav);
+  console.log(el, newFav);
 
-      if(fav =='false') {
+      if(newFav !== 'true') {
         el.classList.remove('fav_yes');
         el.classList.add('fav_no');
-        el.setAttribute('aria-label', 'mark as fav');
-
+        el.setAttribute('aria-label', 'Not Favorited');
       } else {
-
         el.classList.remove('fav_no');
         el.classList.add('fav_yes');
-        el.setAttribute('aria-label', 'removed fav');
-      }
+        el.setAttribute('aria-label', 'Favorited');
+      } 
+     
 }
 /**
  * Add markers for current restaurants to the map.

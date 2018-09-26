@@ -181,7 +181,7 @@
   /*align-content: center;*/
 }
 
-.fav_yes {
+.fav_no {
   
     background-color: #4CAF50;
     border: none;
@@ -196,9 +196,9 @@
   
 }
 
-.fav_no {
+.fav_yes {
   
-    background-color: steelblue;
+    background-color: #f4a460;
     border: none;
     color: white;
     padding: 20px;

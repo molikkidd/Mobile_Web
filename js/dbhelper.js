@@ -293,21 +293,23 @@ static addNewReview(review) {
  
 
 // update the favorite status 
-static updFavStatus(restaurantId, newFav) {
+static updFavStatus(id, newFav) {
     console.log('changed the status', newFav);
 
-    fetch(`http://localhost:1337/restaurants/${restaurantId}?is_favorite=${newFav}`, {method: 'PUT'}).then(()=>{
-      console.log('added to restaurant:', restaurantId, ' and changed the is_favorite');
+    fetch(`http://localhost:1337/restaurants/` + id + `?is_favorite=` + newFav, {method: 'PUT'}).then(()=>{
+      console.log('restaurant: ' + id + ' is_favorite was changed to ' + newFav);
 
       dbPromise.then(db => {
         const tx = db.transaction('restaurants', 'readwrite'); 
         const restaStore = tx.objectStore('restaurants');
 
-        restaStore.get(restaurantId).then(restaurant => {
-          restaurant.is_favorite = !newFav;
-          restaStore.put(restaurant);
+        restaStore.get(id).then(restaurant => {
+            newFav = restaurant.is_favorite;
+            restaStore.put(restaurant);   
         });
-      })
+
+      });
+
     })
 }
 

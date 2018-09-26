@@ -114,7 +114,7 @@ DBHelper.fetchReviewsById(self.restaurant.id).then(res => {
 fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
 let restaurant = self.restaurant;
 
-  const hours = document.getElementById('restaurant-hours');
+const hours = document.getElementById('restaurant-hours');
   for (let key in operatingHours) {
     const row = document.createElement('tr');
 
@@ -127,60 +127,91 @@ let restaurant = self.restaurant;
     row.appendChild(time);
     hours.appendChild(row);
   }
-    const favBut = document.createElement('button');
-    favBut.className = 'fav-but';
-    hours.appendChild(favBut);
-
-    let icon = document.createElement('i');
+// Favorite button
+const newFavourite = document.createElement('button');
+  let icon = document.createElement('i');
     icon.className = 'fas fa-trophy';
-    favBut.append(icon);
+    newFavourite.append(icon);
 
-    favBut.onclick = () => {
-    const newFav = !restaurant.new_fav;
+// Upon clicking the sumbit button
+  newFavourite.onclick = () => {
+    var newFav = restaurant.is_favorite;
+    if (newFav) {
+        newFav = 'true';
+        alertify.success('A new Favorite');
+    } else {
+        newFav = 'false';
+        alertify.warning('Removed Favorite');
+
+    }
+      console.log(newFav);
+    applyNewClass(newFavourite, newFav);
     DBHelper.updFavStatus(restaurant.id, newFav);
-    restaurant.new_fav = !restaurant.new_fav
-    changeFavElementClass(favBut, restaurant.new_fav)
+    restaurant.is_favorite = !restaurant.is_favorite;
+  };
+    
+    applyNewClass(newFavourite, restaurant.is_favorite);
+  hours.append(newFavourite);
 }
+
+applyNewClass = (el, newFav) =>{
+
+  console.log(el, newFav);
+
+    if(newFav !== 'true') {
+      el.classList.remove('fav_yes');
+      el.classList.add('fav_no');
+      el.setAttribute('aria-label', 'Not Favorited');
+    } else {
+      el.classList.remove('fav_no');
+      el.classList.add('fav_yes');
+      el.setAttribute('aria-label', 'Favorited');
+    } 
+     
 }
+
 addReview = () => {
 
-  // event.preventDefault();
-
-  let restaurantId = getParameterByName('id');
+  // Grab the values from the submit form
+  let restId = getParameterByName('id');
   let name = document.getElementById('reviewer-name').value;
   let rating = document.getElementById('rating').value;
   let comments = document.getElementById('new-comment').value;
 
+// Store values in an Array
   const review = [
-  name, rating, comments, restaurantId
+  name, rating, comments, restId
   ];
-
+// Create a template/JSON object to display 
   const displayNewReview = {
+
     restaurant_id: parseInt(review[3]),
-    rating: parseInt(review[1]),
     name: review[0],
+    createdAt: new Date(),
+    rating: parseInt(review[1]),
     comments: review[2],
-    createdAt: new Date()
   }
+// if offline store the review in the db
 if (!navigator.onLine) {
 
   DBHelper.addNewReview(displayNewReview);
   createReviewHTML(displayNewReview);
-  document.getElementById('rev-form').reset( 
+  document.getElementById('rev-form')
+  .reset( 
     alertify.error('OFFLINE = Review added to DB')
   );
 
 } else {
-
+// when online do the same thing
   DBHelper.addNewReview(displayNewReview);
   createReviewHTML(displayNewReview);
-  document.getElementById('rev-form').reset(  
+  document.getElementById('rev-form')
+  .reset(  
     alertify.success('New review was added')
   ); 
 }
  
 }
-
 
 /**
  * Create all reviews HTML and add them to the webpage.

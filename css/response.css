@@ -44,6 +44,7 @@
   }
 }
 /*========GRID / FLEXBOX ON RESTAURANT DETAILS PAGE=====*/
+/*mobile view*/
 @media screen and (max-width: 780px){
   #maincontent2 {
     /*display: grid;*/
@@ -70,17 +71,16 @@
     padding: 10px 10px;
   }
 }
-@media screen and (min-width: 781px) and (max-width:850px) {
+
+/*Medium width...original view*/
+@media screen and (min-width: 768px) and (max-width:850px) {
   .flex {
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
   }
   .inside #map-container {
-    /*order:1;*/
-
+    order:1;
   }
-
- 
   .inside #map {
     background-color: #ccc;
     height: 100%;
@@ -90,18 +90,18 @@
     width: 50%;
   }
   .inside #restaurant-container {
-    order: 1;
+    order: 2;
     max-width:45%;
     padding: 140px 20px 8px;
   }
    div#mainform{
-    order:2;
-    max-width: 100%;
+    order:3;
+    max-width: 50%;
     font-family:'Fauna One',serif
   }
   .inside #reviews-container {
-    order: 3;
-    max-width: 50%;
+    order: 4;
+    max-width: 48%;
     padding: 20px 8px;
   }
 }
