@@ -31,6 +31,11 @@ Great, you are ready to proceed forward; awesome!
 
 Let's start with running commands in your terminal, known as command line interface (CLI)
 
+
+<!-- ========================================================== -->
+GETTING STARTED
+<!-- ========================================================== -->
+
 Install project dependancies
 # npm i
 Install Sails.js globally
@@ -40,13 +45,14 @@ Start the server
 You should now have access to your API server environment
 debug: Environment : development debug: Port : 1337
 
-
 Steps to run the Application
-1st Run node server 
+1st 
+Change the directory to the Project Sails-server and Run node server 
 
-2nd Run the http-server -p 8000 .
+2nd 
+Open another terminal and change the directory Project foldr and Run the python3 -m http.server 8000 .
 
-cert.pem and key.pem are for https.
+<!-- ============================================================ -->
 
 Endpoints
 GET Endpoints
@@ -100,7 +106,7 @@ Parameters
 DELETE Endpoints
 Delete a restaurant review
 http://localhost:1337/reviews/<review_id>
-If you find a bug in the source code or a mistake in the documentation, you can help us by submitting an issue to our Waffle Dashboard. Even better you can submit a Pull Request with a fix :)
+If you find a bug in the source code or a mistake in the documentation, you can help us by submitting an issue to our Waffle Dashboard. Even better you can submit a Pull Request with a fix 
 
 SUMMARY
 Lighthouse ratings
