@@ -48,7 +48,7 @@ self.addEventListener('fetch', (event) => {
 
   let reqUrl = new URL(event.request.url);
 
-if(event.request.method === "POST"){
+if(event.request.url === "POST"){
          var newObj = {};
 
                event.request.formData().then(formData => {
@@ -68,13 +68,13 @@ if(event.request.method === "POST"){
    }
 
     event.respondWith( 
-        caches.match(event.request, {ignoreSeach:true}).then(response => {
+        caches.match(event.request.url, {ignoreSeach:true}).then(response => {
           if (response) {
             return response
           }
              return fetch(event.request).then(ca =>{
             caches.open('resta-sw-1').then(cache => {
-              cache.put(event.request, ca);
+              cache.put(event.request.url, ca);
             });
             return ca.clone();
            }).catch(error => {

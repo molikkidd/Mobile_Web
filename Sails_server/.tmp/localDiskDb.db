@@ -21,7 +21,7 @@
           "Sunday": "12:00 pm - 4:00 pm, 5:30 pm - 11:00 pm"
         },
         "createdAt": 1504095563444,
-        "updatedAt": "2018-09-27T03:16:51.751Z",
+        "updatedAt": "2018-09-27T23:15:35.553Z",
         "id": 1,
         "is_favorite": "false"
       },
@@ -45,8 +45,8 @@
           "Sunday": "12:00 pm - 3:00 pm, 5:00 pm - 11:00 pm"
         },
         "createdAt": 1504095568414,
-        "updatedAt": "2018-09-27T22:49:10.476Z",
-        "is_favorite": "true",
+        "updatedAt": "2018-09-27T23:02:07.953Z",
+        "is_favorite": "false",
         "id": 2
       },
       {
@@ -69,9 +69,9 @@
           "Sunday": "11:30 am - 2:00 am"
         },
         "createdAt": 1504095571434,
-        "updatedAt": "2018-09-27T02:05:32.205Z",
+        "updatedAt": "2018-09-27T23:14:04.971Z",
         "id": 3,
-        "is_favorite": "true"
+        "is_favorite": "false"
       },
       {
         "name": "Katz's Delicatessen",
@@ -117,8 +117,8 @@
           "Sunday": "10:00 am - 12:00 am"
         },
         "createdAt": 1504095567071,
-        "updatedAt": "2018-09-27T02:05:33.730Z",
-        "is_favorite": "true",
+        "updatedAt": "2018-09-27T23:02:39.838Z",
+        "is_favorite": "false",
         "id": 5
       },
       {
@@ -141,8 +141,8 @@
           "Sunday": "12:00 pm - 9:00 pm"
         },
         "createdAt": 1504095567071,
-        "updatedAt": "2018-09-27T03:15:26.472Z",
-        "is_favorite": "true",
+        "updatedAt": "2018-09-27T23:02:36.674Z",
+        "is_favorite": "false",
         "id": 6
       },
       {
@@ -165,8 +165,8 @@
           "Sunday": "11:30 am - 10:00 pm"
         },
         "createdAt": 1504095567091,
-        "updatedAt": "2018-09-27T02:05:34.976Z",
-        "is_favorite": "true",
+        "updatedAt": "2018-09-27T23:02:27.287Z",
+        "is_favorite": "false",
         "id": 7
       },
       {
@@ -213,8 +213,8 @@
           "Sunday": "5:00 pm - 10:00 pm"
         },
         "createdAt": 1504095567191,
-        "updatedAt": "2018-09-27T02:05:36.216Z",
-        "is_favorite": "true",
+        "updatedAt": "2018-09-27T23:02:31.366Z",
+        "is_favorite": "false",
         "id": 9
       },
       {
@@ -236,8 +236,8 @@
           "Sunday": "11:00 am - 12:00 am"
         },
         "createdAt": 1504095567183,
-        "updatedAt": "2018-09-27T22:36:32.221Z",
-        "is_favorite": "true",
+        "updatedAt": "2018-09-27T23:02:33.345Z",
+        "is_favorite": "false",
         "id": 10
       }
     ],
@@ -517,6 +517,18 @@
         "createdAt": "2018-09-26T00:49:23.439Z",
         "updatedAt": "2018-09-26T00:49:23.439Z",
         "id": 98
+      },
+      {
+        "restaurant_id": "1",
+        "createdAt": "2018-09-27T23:08:29.240Z",
+        "updatedAt": "2018-09-27T23:08:29.240Z",
+        "id": 99
+      },
+      {
+        "restaurant_id": "1",
+        "createdAt": "2018-09-27T23:14:37.046Z",
+        "updatedAt": "2018-09-27T23:14:37.046Z",
+        "id": 100
       }
     ]
   },
@@ -572,7 +584,7 @@
       "id": 10
     },
     "reviews": {
-      "id": 98
+      "id": 100
     }
   }
 }
