@@ -3,13 +3,10 @@ var newMap;
 
 document.addEventListener('DOMContentLoaded', (event) => {  
   initMap();
-    addReview();
+    // addReview();
 
 });
 
-// document.addEventListener('onClick', (event)=>{
-//   addReview();
-// });
 /**
  * Initialize leaflet map
  */
@@ -172,6 +169,8 @@ applyNewClass = (el, newFav) =>{
 
 addReview = () => {
 
+  event.preventDefault();
+  
   // Grab the values from the submit form
   let restId = getParameterByName('id');
   let name = document.getElementById('reviewer-name').value;
@@ -190,26 +189,32 @@ addReview = () => {
     createdAt: new Date(),
     rating: parseInt(review[1]),
     comments: review[2],
+    updatedAt: Date.now()
   }
+
+  document.addEventListener('onLoad', (event)=>{
+    console.log(event.type);
+
+});
 // if offline store the review in the db
-if (!navigator.onLine) {
+  if (!navigator.onLine) {
+  // add review to local storage then send to server after
+    DBHelper.offLineReview(displayNewReview);
+    createReviewHTML(displayNewReview);
+    document.getElementById('rev-form')
+    .reset( 
+      alertify.error('OFFLINE = Review added to DB')
+    );
 
-  DBHelper.addNewReview(displayNewReview);
-  createReviewHTML(displayNewReview);
-  document.getElementById('rev-form')
-  .reset( 
-    alertify.error('OFFLINE = Review added to DB')
-  );
-
-} else {
-// when online do the same thing
-  DBHelper.addNewReview(displayNewReview);
-  createReviewHTML(displayNewReview);
-  document.getElementById('rev-form')
-  .reset(  
-    alertify.success('New review was added')
-  ); 
-}
+  } else {
+  // when online do the same thing
+    DBHelper.addNewReview(displayNewReview);
+    createReviewHTML(displayNewReview);
+    document.getElementById('rev-form')
+    .reset(  
+      alertify.success('New review was added')
+    ); 
+  }
  
 }
 

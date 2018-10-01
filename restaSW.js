@@ -48,19 +48,19 @@ self.addEventListener('fetch', (event) => {
 
   let reqUrl = new URL(event.request.url);
 
-if(event.request.url === "POST"){
-         var newObj = {};
+// if(event.request.method === "POST"){
+//          var newObj = {};
 
-               event.request.formData().then(formData => {
+//                event.request.formData().then(formData => {
 
-                for(var pair of formData.entries()) {
-                  var key = pair[0];
-                  var value =  pair[1];
-                  newObj[key] = value;
-                }
+//                 for(var pair of formData.entries()) {
+//                   var key = pair[0];
+//                   var value =  pair[1];
+//                   newObj[key] = value;
+//                 }
 
-              })
-      }
+//               })
+//       }
 
 
    if (reqUrl === port && portTwo){

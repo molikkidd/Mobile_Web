@@ -270,27 +270,41 @@ static fetchReviewsById(id) {
 
 // add new review to the page
 static addNewReview(review) {
-    console.log('this is what is returned to the addReview:', review);
+    console.log('this is what is sent to the addReview:', review);
 
-    const id = self.restaurant.id;
 
-  fetch(revById_Url + id, {
+  fetch('http://localhost:1337/reviews/', {
         method: 'POST', 
-        headers: new Headers ({'Content-Type': 'application/json;'}),
+        mode:'cors',
+        headers: new Headers ({'Content-Type': 'application/json; charset=utf-8'}),
         body: JSON.stringify(review)
-  }).then(() => {
+  }).then((response) => {
+
+    console.log(response, 'after being sent to the server');
+
       dbPromise.then(db => { 
             const tx = db.transaction('reviews', 'readwrite')
             const revStore = tx.objectStore('reviews');
 
               // loop thru each review and add to the cache            
-                revStore.put(review); 
+                revStore.put(review);
                 return tx.complete;
     })
   })
 
 }
  
+
+static offLineReview(review) {
+    localStorage.setItem('review', JSON.stringify(review));
+
+  window.addEventListener('online', event =>{
+        alertify.success('CONNECTION RESTORED');
+        DBHelper.addNewReview(review);
+        localStorage.removeItem('review');
+  });
+}
+
 
 // update the favorite status 
 static updFavStatus(id, newFav) {
