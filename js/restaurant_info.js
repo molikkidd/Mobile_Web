@@ -3,7 +3,6 @@ var newMap;
 
 document.addEventListener('DOMContentLoaded', (event) => {  
   initMap();
-    // addReview();
 
 });
 
