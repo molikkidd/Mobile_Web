@@ -21,7 +21,7 @@
     "gulp-imagemin": "^4.1.0",
     "gulp-load-plugins": "^1.6.0",
     "gulp-responsive": "^2.14.0",
-    "gulp-responsive-images": "0.0.3",
+    "gulp-responsive-images": "0.0.4",
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^1.0.4",
     "run-sequence": "^2.2.1"
@@ -33,10 +33,11 @@
     "gulp-sass": "^4.0.1",
     "lazysizes": "^4.0.4",
     "sails": "^0.12.14",
+    "sharp": "^0.30.4",
     "uglify-es": "^3.3.9"
   },
-  "engines" : { 
-    "npm" : ">=7.0.0",
-    "node" : "12.13.0"
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": "12.13.0"
   }
 }
