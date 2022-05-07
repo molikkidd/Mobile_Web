@@ -34,7 +34,7 @@
     "gulp-cli": "^2.0.1",
     "gulp-htmlmin": "^4.0.0",
     "gulp-sass": "^4.0.1",
-    "lazysizes": "^4.0.4",
+    "lazysizes": "^5.2.1",
     "sails": "^0.12.14",
     "uglify-es": "^3.3.9",
     "utf-8-validate": "^5.0.9"
