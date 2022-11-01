@@ -13,7 +13,7 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "browser-sync": "^2.27.9",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-babel": "^7.0.1",
     "gulp-concat": "^2.6.1",
@@ -35,7 +35,7 @@
     "gulp-htmlmin": "^4.0.0",
     "gulp-sass": "^4.0.1",
     "lazysizes": "^4.0.4",
-    "sails": "^0.12.14",
+    "sails": "^1.5.3",
     "uglify-es": "^3.3.9",
     "utf-8-validate": "^5.0.9"
   },
